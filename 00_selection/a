@@ -1,0 +1,203 @@
+# 📊 Challenge – Data Science (Júnior)
+
+Bem-vindo ao **Challenge de Data Science** da BU de Dados e IA da GFT!
+
+Este desafio faz parte do nosso processo de seleção para integrar a equipe responsável pelo **Agent Factory**, uma iniciativa estratégica com foco em soluções de inteligência baseadas em dados.
+
+---
+
+## 🎯 Objetivo
+
+Seu objetivo neste desafio é construir um modelo simples de **machine learning** utilizando dados reais do ENEM, com o foco em **prever a nota da redação** de um candidato a partir de informações disponíveis no conjunto de dados.
+
+---
+
+## 🔍 O que você vai fazer
+
+Você será responsável por seguir as principais etapas de um projeto de Ciência de Dados, de forma simples e organizada:
+
+### 1. **Carregamento e exploração dos dados**
+
+* Utilize o dataset que disponibilizamos neste link:
+* Faça a leitura, entenda as colunas disponíveis e identifique quais podem ser úteis para a tarefa.
+
+### 2. **Análise exploratória dos dados (EDA)**
+
+* Crie visualizações e tabelas para entender o comportamento das variáveis.
+* Observe possíveis correlações com a nota da redação (`NU_NOTA_REDACAO`).
+* Verifique a existência de valores ausentes ou inconsistentes.
+
+### 3. **Construção do modelo**
+
+Você pode escolher entre duas abordagens:
+
+* **Regressão:** prever a nota exata da redação (de 0 a 1000).
+* **Classificação:** prever a faixa de desempenho da redação (por exemplo):
+
+  * **Baixa**: 0–400
+  * **Média**: 401–800
+  * **Alta**: 801–1000
+
+> Lembre-se principalmente da etapa de Feature Engineering. O dataset tem algumas variáveis que, apesar de representadas por valores numéricos, são **categóricas**. Você deverá tratá-las corretamente para adicioná-las ao modelo, se julgar necessário.
+
+### 4. **Avaliação do modelo**
+
+* Para regressão: use métricas como **MAE**, **RMSE** ou **R²**.
+* Para classificação: utilize **acurácia**, **precisão**, **recall**, **matriz de confusão**, etc.
+
+### 5. **Conclusão**
+
+* Destaque as variáveis que mais influenciaram na previsão.
+* Comente o desempenho do modelo e possíveis melhorias.
+* Aqui o que mais vale é sua explicação. Demonstre que entendeu todo o processo.
+
+---
+
+## 📁 Sobre os dados
+
+Você estará trabalhando com um dataset real do ENEM 2019, extraído do site do INEP. Para este desafio, selecionamos apenas 10.000 registros e algumas colunas, com o objetivo de não tornar o dataset tão pesado para as análises. As colunas selecionadas foram:
+
+| Coluna            | Descrição                                                                 | Categorias / Valores Possíveis                                                       |
+|-------------------|---------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| NU_ANO            | Ano de realização do exame.                                               | Ex: 2019                                                                  |
+| NU_NOTA_CN        | Nota em Ciências da Natureza.                                             | Varia entre 0 e 1000                                                                  |
+| NU_NOTA_CH        | Nota em Ciências Humanas.                                                 | Varia entre 0 e 1000                                                                  |
+| NU_NOTA_LC        | Nota em Linguagens e Códigos.                                             | Varia entre 0 e 1000                                                                  |
+| NU_NOTA_MT        | Nota em Matemática.                                                       | Varia entre 0 e 1000                                                                  |
+| TP_ESCOLA         | Tipo de escola em que o participante concluiu ou está concluindo o EM.    | 1: Não respondeu <br>2: Pública<br>3: Privada<br>4: Exterior       |
+| NU_NOTA_REDACAO   | Nota obtida na redação.                                                   | Varia entre 0 e 1000                                                                  |
+| TP_ST_CONCLUSAO   | Situação de conclusão do Ensino Médio do participante.                    | 1: Já concluí<br>2: Estou cursando e vou concluir em 2019<br>3: Estou cursando e vou concluir após 2019 <br>4: Não concluí e não estou cursando o Ensino Médio|
+
+---
+
+## 📌 Entrega
+
+Você deverá entregar um **notebook Jupyter (.ipynb)** com:
+
+* As análises e visualizações realizadas
+* O(s) modelo(s) criados
+* Métricas utilizadas para avaliação
+* Conclusões finais
+
+> Organização, clareza nos comentários e boas práticas contam muitos pontos!
+
+---
+
+## 💡 Dicas
+
+* Comece com uma amostra menor para explorar os dados mais rapidamente.
+* Elimine colunas que não fazem sentido (como CPF, nome, código da prova, etc.).
+* Tente diferentes algoritmos, mas priorize o entendimento sobre a complexidade.
+* Comente cada etapa no seu notebook explicando o que está fazendo e porquê.
+* **Não se preocupe *tanto* com o resultado final**. O objetivo maior do exercício é avaliar a linha de raciocínio e o pensamento crítico resolver o case.
+* Você pode usar aplicações de IA Generativa. No entanto, todas as decisões serão questionadas. É importante entender o que está fazendo a todo momento.
+
+---
+
+## ✅ Critérios de Avaliação
+
+* Clareza e organização do notebook
+* Qualidade da análise exploratória
+* Adequação do modelo e interpretação dos resultados
+* Justificativa das decisões técnicas
+* Comunicação das conclusões
+
+---
+
+Boa sorte, e divirta-se no processo!
+Estamos ansiosos para ver como você vai transformar dados em conhecimento. 🚀
+# 0. Imports
+
+Faça aqui nesta seção todos os imports que você precisar. Já deixamos algumas sugestões prontas mas fique a vontade para usar quaisquer outras desejadas :)
+%pip install pandas
+%pip install numpy
+%pip install matplotlib
+%pip install scikit-learn
+#%pip install xgboost
+#%pip install seaborn
+import pandas as pd # Carregamento e manipulação de dados
+import matplotlib as plt # Visualização
+import numpy as np # lib para utilização de operações numericas
+from sklearn.preprocessing import OneHotEncoder # lib para transformar as variáveis categóricas em colunas binárias que facilitam sua manipulação
+from sklearn.model_selection import train_test_split # lib para separação de de conjunto de dados entre treino e teste, com objetivo de prevenir overfitting
+from sklearn.impute import SimpleImputer # Prevenção de dados nulos no modelo
+from sklearn.compose import ColumnTransformer # lib que permite aplicar transformações diferentes para variáveis numericas e categoricas
+from sklearn.pipeline import Pipeline # clean code
+from sklearn.linear_model import LinearRegression # lib que implementa coeficientes para as variáveis, visando minimizar os erros entre os valores reais e os previstos
+from sklearn.metrics import mean_absolute_error # Implementação do MAE para mostrar a variança dos dados previstos com os dados reais
+from sklearn.metrics import mean_squared_error # Implementação do RMSE para mostrar a variança dos dados previstos com os dados reais
+from sklearn.metrics import r2_score # Implementação do R² para mostrar a variança dos dados previstos com os dados reais
+## 📁 1. Carregamento e limpeza dos dados
+# remova os comentários para ler o arquivo do github
+# carregando o dataframe diretamente do github
+# import pandas as pd
+# file_path = "https://raw.githubusercontent.com/silva-raphael/ps-datascience-gft/refs/heads/main/filtered-enem-2019.csv"
+
+# Realizando leitura do dataframe
+df = pd.read_csv("https://raw.githubusercontent.com/silva-raphael/ps-datascience-gft/refs/heads/main/filtered-enem-2019.csv")
+
+
+### Limpeza e tratamento
+# Descartando a variável NU_ANO, visto que o dataset mantém essa informação estática
+df = df[[
+    'NU_NOTA_CN',
+    'NU_NOTA_CH',
+    'NU_NOTA_LC',
+    'NU_NOTA_MT',
+    'TP_ESCOLA',
+    'NU_NOTA_REDACAO',
+    'TP_ST_CONCLUSAO'
+]]
+
+# Verificação de campos nulos, caso existam, eu devo substitui-los por outro valor para não afetar no algoritmo
+df.isnull().sum()
+
+# Remoção da NU_NOTA_REDACAO do dataframe, X recebendo o dataframe inteiro exceto NU_NOTA_REDACAO, e y contendo a totalidade da NU_NOTA_REDACAO
+X = df.drop('NU_NOTA_REDACAO', axis=1)
+y = df['NU_NOTA_REDACAO']
+### Visualizações iniciais
+# Classificando as variáveis numéricas e as categóricas
+numericas = ['NU_NOTA_CN', 'NU_NOTA_CH', 'NU_NOTA_LC', 'NU_NOTA_MT']
+categoricas = ['TP_ESCOLA', 'TP_ST_CONCLUSAO']
+
+# O OneHotEncoder transforma as variáveis categóricas em colunas binárias, visando evitar confusões no algoritmo, visto que essas variáveis vao divergir dos valores de nota que serão pesados para prever o valor da nota da redação
+cat_pipeline = Pipeline([
+    ('encoder', OneHotEncoder(handle_unknown='ignore'))
+])
+
+# O ColumnTransformer foi utilizado para aplicar transformações diferentes para cada tipo de variável, para prosseguir com o uso delas na pipeline
+preprocessamento = ColumnTransformer([
+    ('num', 'passthrough', numericas), # Passa as variáveis numéricas diretamente, da maneira que estão no dataframe
+    ('cat', cat_pipeline, categoricas) # Passa as variáveis categoricas com o OneHotEncoder aplicado
+])
+## 🤖 2. Análise exploratória dos dados
+# Criaçào da pipeline, usando os dados tratados anteriormente, e aplicando a equação de regressào linear
+modelo = Pipeline([
+    ('preprocessamento', preprocessamento), # Objeto definido anteriormente, contendo as colunas transformadas por tipo de variável
+    ('regressor', LinearRegression()) # Aplica o modelo de regressão linear, usando a equação para chegar no valor previsto da NU_NOTA_REDACAO com base nos coeficientes numéricos (outras notas) + as variáveis categóricas
+])
+## 🧪 3. Construção do modelo (Treinamento e avaliação)
+# Aplicação do train_test_split, que separa a massa em 20% (test_size=0.2) para testes e o restante para treinamento, visando treinar o modelo com uma fatia dos dados, e em seguida testar o desempenho do modelo com uma parte dos dados que ainda não foi vista pelo modelo
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42) # Achei bizarro o 42 sertão comum como divisor nas aulas que assisti e basicamente em toda aplicação de treinamento, tive que pesquisar para entender por que tanta gente usa o 42 e não me decepcionei
+
+# Treinamento do modelo usando as variáveis de treinamento separadas anteriormente
+modelo.fit(X_train, y_train) # o método .fit() irá treinar o modelo a prever a variável y (NU_NOTA_REDACAO) baseado nos coeficientes X previamente estabelecidos pelo LinearRegression()
+
+# Agora que o treinamento está concluído, podemos prosseguir com a aplicação das métricas
+y_pred = modelo.predict(X_test) # irá fazer previsões com os dados de teste que ainda não foram vistos no treinamento do modelo.
+## 🧠 4. Avaliação do modelo
+# MAE
+mae = mean_absolute_error(y_test, y_pred) # Aplica a metrica Erro Médio Absoluto, que visa contabilizar a variancia entre a previsão do modelo com os dados reais a partir dos erros absolutos
+print(f"MAE: {mae:.2f}") # exibe o valor do erro médio em pontos da redação
+
+#RMSE
+rmse = np.sqrt(mean_squared_error(y_test, y_pred)) # Similar ao MAE, ele também calcula a variância com base nos erros, porém consegue pegar os casos mais extremos (outliers) por elevar as métricas ao quadrado, expondo os outliers, igual o MSE, porém ao aplicar a raiz quadrada é possível visualizar a variância na mesma escala que os dados originais
+print(f"RMSE: {rmse:.2f}")
+
+#R²
+r2 = r2_score(y_test, y_pred) # Métrica que representa o percentual da variância dos dados em porcentagem
+print(f"R²: {r2:.2f}")
+## 🗣️ 5. Conclusão
+Como deu para ver eu não tenho muito conhecimento na ciência de dados, maioria dos meus comentários estavam servindo como fixadores para eu entender melhor o que cada método estava fazendo e explicando qual a razão de utilizar eles.
+
+Não tenho o conhecimento necessário ainda para entender como melhorar a variância das previsões sem ter uma massa de dados maior, porém estou com bastante interesse em continuar aprendendo mais sobre o assunto, que acabou me interessando bastante, mesmo sendo diferente da engenharia de dados que eu estava estudando previamente (como os dados estavam bem limpos não teve muita coisa a ser cortada).
